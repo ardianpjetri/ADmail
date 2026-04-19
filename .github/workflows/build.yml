@@ -2,7 +2,6 @@ name: Build APK
 on: [push]
 
 env:
-  # This silences the Node.js warning you're seeing
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
@@ -16,14 +15,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # THIS STEP FIXES EXIT CODE 126
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-
+      - name: Clean and Fix Permissions
+        run: |
+          # This removes Windows line endings and forces execution rights
+          sed -i 's/\r$//' gradlew
+          chmod +x gradlew
+        
       - name: Build Debug APK
         run: ./gradlew assembleDebug
-
+        
       - uses: actions/upload-artifact@v4
         with:
-          name: app-debug.apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: app-debug
+          path: "**/*.apk" # This searches all folders for the APK
