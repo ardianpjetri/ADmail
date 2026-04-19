@@ -1,0 +1,39 @@
+HOW TO BUILD YOUR APK
+=====================
+
+This ZIP contains your complete Android Studio project.
+To get the final APK file, you need to build it:
+
+OPTION 1 — Android Studio (easiest)
+1. Install Android Studio: https://developer.android.com/studio
+2. Open this folder in Android Studio
+3. Click Build > Build Bundle(s) / APK(s) > Build APK(s)
+4. APK will be at: app/build/outputs/apk/debug/app-debug.apk
+
+OPTION 2 — Command Line (Linux/macOS/Windows)
+Requirements: JDK 17, Android SDK
+  ./gradlew assembleDebug
+  # Output: app/build/outputs/apk/debug/app-debug.apk
+
+OPTION 3 — GitHub Actions (free CI build)
+Push this project to GitHub and add this workflow:
+  .github/workflows/build.yml
+
+  name: Build APK
+  on: [push]
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-java@v3
+          with: { java-version: '17', distribution: 'temurin' }
+        - run: ./gradlew assembleDebug
+        - uses: actions/upload-artifact@v3
+          with:
+            name: app-debug.apk
+            path: app/build/outputs/apk/debug/app-debug.apk
+
+App: ADMail
+Package: com.admail1.temp
+Generated: 2026-04-19T15:44:35.662Z

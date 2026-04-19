@@ -1,0 +1,1 @@
+-keep class com.admail1.temp.** { *; }
