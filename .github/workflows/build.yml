@@ -1,9 +1,8 @@
 name: Build APK
-
 on: [push]
 
-# Fixes the Node.js 20 deprecation warnings for checkout, setup-java, and upload-artifact
 env:
+  # This silences the Node.js warning you're seeing
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
@@ -16,13 +15,14 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          
+
+      # THIS STEP FIXES EXIT CODE 126
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
-        
+
       - name: Build Debug APK
         run: ./gradlew assembleDebug
-        
+
       - uses: actions/upload-artifact@v4
         with:
           name: app-debug.apk
